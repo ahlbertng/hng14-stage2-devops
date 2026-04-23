@@ -12,9 +12,10 @@
   ```
   to:
   ```python
-  REDIS_HOST = os.getenv("REDIS_HOST", "localhost")
-  REDIS_PORT = int(os.getenv("REDIS_PORT", "6379"))
-  r = redis.Redis(host=REDIS_HOST, port=REDIS_PORT, decode_responses=False)
+ REDIS_HOST = os.getenv("REDIS_HOST", "localhost")
+REDIS_PORT = int(os.getenv("REDIS_PORT"))
+
+r = redis.Redis(host=REDIS_HOST, port=REDIS_PORT)
   ```
 
 **Issue 2: Hardcoded Redis Port**
@@ -46,9 +47,9 @@
 - **Problem:** Same as API - will fail in containerized environment
 - **Fix:** Added environment variable support with fallback:
   ```python
-  REDIS_HOST = os.getenv("REDIS_HOST", "localhost")
-  REDIS_PORT = int(os.getenv("REDIS_PORT", "6379"))
-  r = redis.Redis(host=REDIS_HOST, port=REDIS_PORT, decode_responses=False)
+REDIS_HOST = os.getenv("REDIS_HOST", "localhost")
+REDIS_PORT = int(os.getenv("REDIS_PORT"))
+r = redis.Redis(host=REDIS_HOST, port=REDIS_PORT) db=0
   ```
 
 **Issue 2: Hardcoded Redis Port**
@@ -80,7 +81,7 @@
 - **Problem:** API URL hardcoded to `"http://localhost:8000"` will fail when API runs on different hostname in Docker network
 - **Fix:** Changed to use environment variable:
   ```javascript
-  const API_URL = process.env.API_URL || "http://localhost:8000";
+  const API_URL = process.env.API_URL
   ```
 
 **Issue 2: Server Binds Only to Localhost**

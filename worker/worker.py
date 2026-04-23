@@ -5,9 +5,9 @@ import signal
 import sys
 
 
-REDIS_HOST = os.getenv("REDIS_HOST", "localhost")
-REDIS_PORT = int(os.getenv("REDIS_PORT", "6379"))
-r = redis.Redis(host=REDIS_HOST, port=REDIS_PORT, decode_responses=False)
+REDIS_HOST = os.getenv("REDIS_HOST")
+REDIS_PORT = int(os.getenv("REDIS_PORT"))
+r = redis.Redis(host=REDIS_HOST, port=REDIS_PORT, db=0)
 
 def shutdown(signum, frame):
     print("Gracefully shutting down...")

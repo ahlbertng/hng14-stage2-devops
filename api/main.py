@@ -6,9 +6,9 @@ import os
 app = FastAPI()
 
 REDIS_HOST = os.getenv("REDIS_HOST", "localhost")
-REDIS_PORT = int(os.getenv("REDIS_PORT", 6379))
+REDIS_PORT = int(os.getenv("REDIS_PORT"))
 
-r = redis.Redis(host=REDIS_HOST, port=REDIS_PORT)
+r = redis.Redis(host=REDIS_HOST, port=REDIS_PORT) db=0
 
 @app.post("/jobs")
 def create_job():

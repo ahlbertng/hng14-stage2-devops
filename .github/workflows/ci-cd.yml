@@ -17,7 +17,7 @@ jobs:
       - uses: actions/checkout@v4
       
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: '3.11'
       
@@ -31,10 +31,16 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: '20'
       
       - name: Install eslint
         run: npm install -g eslint
+
+      - name: Create eslint config if missing
+        run: |
+          if [ ! -f frontend/.eslintrc.json ] && [ ! -f .eslintrc.json ]; then
+            echo '{"env":{"node":true,"es2021":true},"extends":"eslint:recommended","parserOptions":{"ecmaVersion":2021}}' > .eslintrc.json
+          fi
       
       - name: Lint JavaScript (eslint)
         run: eslint frontend/app.js --max-warnings 0
@@ -69,7 +75,7 @@ jobs:
       - uses: actions/checkout@v4
       
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: '3.11'
       
@@ -307,7 +313,7 @@ jobs:
         run: mkdir -p sarif-results && mv *-trivy-results.sarif sarif-results/
 
       - name: Upload Trivy results
-        uses: github/codeql-action/upload-sarif@v2
+        uses: github/codeql-action/upload-sarif@v3
         if: always()
         with:
           sarif_file: sarif-results/

@@ -1,4 +1,4 @@
-name: CI/CD Pipeline
+iname: CI/CD Pipeline
 
 on:
   push:
@@ -165,7 +165,7 @@ EOF
           pytest tests/test_api.py -v --cov=api --cov-report=xml --cov-report=term --cov-report=html
       
       - name: Upload coverage report
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: coverage-report
           path: |
@@ -302,11 +302,15 @@ EOF
             fi
           done
       
+      - name: Collect SARIF results
+        if: always()
+        run: mkdir -p sarif-results && mv *-trivy-results.sarif sarif-results/
+
       - name: Upload Trivy results
         uses: github/codeql-action/upload-sarif@v2
         if: always()
         with:
-          sarif_file: '*-trivy-results.sarif'
+          sarif_file: sarif-results/
           category: trivy
 
   integration-test:
@@ -357,27 +361,27 @@ EOF
       
       - name: Bring up stack
         run: |
-          docker-compose up -d
+          docker compose up -d
           echo "Waiting for services to be healthy..."
           sleep 20
           echo "Checking service health..."
-          docker-compose ps
+          docker compose ps
       
       - name: Check Redis health
         run: |
-          docker-compose exec -T redis redis-cli ping || exit 1
+          docker compose exec -T redis redis-cli ping || exit 1
       
       - name: Check API health
         run: |
-          docker-compose exec -T api curl -s http://localhost:8000/health | grep -q "healthy" || exit 1
+          docker compose exec -T api curl -s http://localhost:8000/health | grep -q "healthy" || exit 1
       
       - name: Check Frontend health
         run: |
-          docker-compose exec -T frontend wget -q http://localhost:3000/health -O - | grep -q "healthy" || exit 1
+          docker compose exec -T frontend wget -q http://localhost:3000/health -O - | grep -q "healthy" || exit 1
       
       - name: Submit job through API
         run: |
-          JOB_RESPONSE=$(docker-compose exec -T api curl -s -X POST http://localhost:8000/jobs)
+          JOB_RESPONSE=$(docker compose exec -T api curl -s -X POST http://localhost:8000/jobs)
           JOB_ID=$(echo $JOB_RESPONSE | grep -o '"job_id":"[^"]*"' | head -1 | cut -d'"' -f4)
           
           if [ -z "$JOB_ID" ]; then
@@ -405,7 +409,7 @@ EOF
               exit 1
             fi
             
-            STATUS_RESPONSE=$(docker-compose exec -T api curl -s http://localhost:8000/jobs/$JOB_ID)
+            STATUS_RESPONSE=$(docker compose exec -T api curl -s http://localhost:8000/jobs/$JOB_ID)
             STATUS=$(echo $STATUS_RESPONSE | grep -o '"status":"[^"]*"' | cut -d'"' -f4)
             
             echo "Job $JOB_ID status: $STATUS (elapsed: ${ELAPSED}s)"
@@ -428,7 +432,7 @@ EOF
       
       - name: Tear down stack
         if: always()
-        run: docker-compose down -v
+        run: docker compose down -v
 
 
   deploy:
@@ -482,7 +486,7 @@ EOF
           export FRONTEND_IMAGE="localhost:5000/frontend:${SHA}"
           
           # Create temporary compose file with new images
-          cat > docker-compose.deploy.yml << 'COMPOSE'
+          cat > docker-compose.deploy.yml << COMPOSE
           version: '3.9'
           services:
             redis:
@@ -560,7 +564,7 @@ EOF
           COMPOSE
           
           echo "Starting new services..."
-          docker-compose -f docker-compose.deploy.yml up -d
+          docker compose -f docker-compose.deploy.yml up -d
           
           # Wait for health checks
           echo "Waiting for new services to pass health checks (60s timeout)..."
@@ -574,7 +578,7 @@ EOF
             if [ $ELAPSED -gt $TIMEOUT ]; then
               echo "FAILED: Services did not pass health check within 60 seconds"
               echo "Rolling back..."
-              docker-compose -f docker-compose.deploy.yml down
+              docker compose -f docker-compose.deploy.yml down
               exit 1
             fi
             

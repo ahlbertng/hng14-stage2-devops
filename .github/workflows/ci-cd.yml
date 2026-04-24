@@ -197,7 +197,15 @@ jobs:
       - name: Start local Docker registry
         run: |
           docker run -d --network host -p 5000:5000 registry:2
-          sleep 5
+          # Wait for registry to be ready with health check
+          for i in {1..30}; do
+            if curl -f http://localhost:5000/v2/ 2>/dev/null; then
+              echo "Registry is ready"
+              break
+            fi
+            echo "Waiting for registry... ($i/30)"
+            sleep 1
+          done
       
       - name: Build API image
         uses: docker/build-push-action@v5

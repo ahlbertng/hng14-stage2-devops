@@ -1,10 +1,10 @@
 # Stage 1: Build
-# hadolint ignore=DL3008
 FROM python:3.11-slim as builder
 
 WORKDIR /app
 
 # Install build dependencies
+# hadolint ignore=DL3008
 RUN apt-get update && apt-get install -y --no-install-recommends gcc && rm -rf /var/lib/apt/lists/*
 
 # Copy requirements and install
@@ -17,6 +17,7 @@ FROM python:3.11-slim
 WORKDIR /app
 
 # Install runtime dependencies for health checks
+# hadolint ignore=DL3008
 RUN apt-get update && apt-get install -y --no-install-recommends curl && rm -rf /var/lib/apt/lists/*
 
 # Create non-root user

@@ -25,21 +25,21 @@ COPY --from=builder /root/.local /home/appuser/.local
 COPY worker.py .
 
 # Create a health check script
-RUN cat > healthcheck.py << 'EOF'
-import redis
-import os
-import sys
-
-try:
-    host = os.getenv("REDIS_HOST")
-    port = int(os.getenv("REDIS_PORT"))
-    r = redis.Redis(host=host, port=port, socket_connect_timeout=2)
-    r.ping()
-    sys.exit(0)
-except Exception as e:
-    print(f"Health check failed: {e}")
-    sys.exit(1)
-EOF
+RUN printf '%s\n' \
+    'import redis' \
+    'import os' \
+    'import sys' \
+    '' \
+    'try:' \
+    '    host = os.getenv("REDIS_HOST", "redis")' \
+    '    port = int(os.getenv("REDIS_PORT", "6379"))' \
+    '    r = redis.Redis(host=host, port=port, socket_connect_timeout=2)' \
+    '    r.ping()' \
+    '    sys.exit(0)' \
+    'except Exception as e:' \
+    '    print(f"Health check failed: {e}")' \
+    '    sys.exit(1)' \
+    > healthcheck.py
 
 # Set environment variables
 ENV PATH=/home/appuser/.local/bin:$PATH \

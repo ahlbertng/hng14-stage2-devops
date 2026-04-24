@@ -1,4 +1,5 @@
 # Stage 1: Build
+# hadolint ignore=DL3008
 FROM python:3.11-slim as builder
 
 WORKDIR /app

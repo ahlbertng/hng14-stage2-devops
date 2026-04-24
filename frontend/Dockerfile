@@ -1,5 +1,5 @@
 # Stage 1: Build
-FROM node:18-alpine as builder
+FROM node:18-alpine AS builder
 
 WORKDIR /app
 
@@ -15,7 +15,7 @@ FROM node:18-alpine
 WORKDIR /app
 
 # Create non-root user
-RUN addgroup -g 1000 appuser && adduser -D -u 1000 -G appuser appuser
+RUN addgroup -S appuser && adduser -S appuser -G appuser
 
 # Copy node modules from builder
 COPY --from=builder --chown=appuser:appuser /app/node_modules ./node_modules

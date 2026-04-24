@@ -3,17 +3,19 @@ export default [
     files: ["frontend/**/*.js"],
     languageOptions: {
       ecmaVersion: "latest",
-      sourceType: "script",
+      sourceType: "commonjs",
       globals: {
-        window: "readonly",
-        document: "readonly",
-        fetch: "readonly",
-        setTimeout: "readonly",
-      },
+        require: "readonly",
+        process: "readonly",
+        __dirname: "readonly",
+        console: "readonly",
+        module: "readonly",
+        exports: "readonly"
+      }
     },
     rules: {
-      "no-unused-vars": "warn",
       "no-undef": "error",
-    },
-  },
+      "no-unused-vars": ["error", { argsIgnorePattern: "^_" }]
+    }
+  }
 ];

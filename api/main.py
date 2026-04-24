@@ -33,4 +33,3 @@ def health_check():
         return {"status": "healthy"}
     except Exception as e:
         return {"status": "unhealthy", "error": str(e)}
-    

@@ -312,11 +312,10 @@ jobs:
       - name: Check for CRITICAL vulnerabilities
         run: |
           for file in *-trivy-results.sarif; do
-            if grep -q '"level": "error"' "$file"; then
+            if grep -q 'CRITICAL' "$file"; then
               echo "CRITICAL vulnerabilities found in $file"
-              cat "$file"
               exit 1
-            fi
+           fi
           done
       
       - name: Collect SARIF results

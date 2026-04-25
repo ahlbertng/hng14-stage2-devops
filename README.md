@@ -407,14 +407,6 @@ cd worker && python worker.py
 cd frontend && npm start
 ```
 
-## Resources
-
-- [Docker Documentation](https://docs.docker.com/)
-- [Docker Compose Documentation](https://docs.docker.com/compose/)
-- [FastAPI Documentation](https://fastapi.tiangolo.com/)
-- [Express.js Documentation](https://expressjs.com/)
-- [Redis Documentation](https://redis.io/documentation)
-
 ## License
 
 MIT

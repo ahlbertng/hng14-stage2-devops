@@ -288,7 +288,7 @@ jobs:
       - name: Run Trivy scan on API
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: ${{ env.REGISTRY }}/frontend:scan/api:scan
+          image-ref: ${{ env.REGISTRY }}/api:scan
           format: sarif
           output: api-trivy-results.sarif
           severity: CRITICAL,HIGH
@@ -296,7 +296,7 @@ jobs:
       - name: Run Trivy scan on Worker
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: ${{ env.REGISTRY }}/frontend:scan/worker:scan
+          image-ref: ${{ env.REGISTRY }}/worker:scan
           format: sarif
           output: worker-trivy-results.sarif
           severity: CRITICAL,HIGH
@@ -304,7 +304,7 @@ jobs:
       - name: Run Trivy scan on Frontend
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: ${{ env.REGISTRY }}/frontend:scan/frontend:scan
+          image-ref: ${{ env.REGISTRY }}/frontend:scan
           format: sarif
           output: frontend-trivy-results.sarif
           severity: CRITICAL,HIGH

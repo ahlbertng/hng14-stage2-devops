@@ -323,12 +323,26 @@ jobs:
         if: always()
         run: mkdir -p sarif-results && mv *-trivy-results.sarif sarif-results/
 
-      - name: Upload Trivy results
-        uses: github/codeql-action/upload-sarif@v3
+      - name: Upload API Trivy results
+        uses: github/codeql-action/upload-sarif@v4
         if: always()
         with:
-          sarif_file: sarif-results/
-          category: trivy
+          sarif_file: sarif-results/api-trivy-results.sarif
+          category: api
+
+      - name: Upload Worker Trivy results
+        uses: github/codeql-action/upload-sarif@v4
+        if: always()
+        with:
+          sarif_file: sarif-results/worker-trivy-results.sarif
+          category: worker
+
+      - name: Upload Frontend Trivy results
+        uses: github/codeql-action/upload-sarif@v4
+        if: always()
+        with:
+          sarif_file: sarif-results/frontend-trivy-results.sarif
+          category: frontend
 
   integration-test:
     name: Integration Tests

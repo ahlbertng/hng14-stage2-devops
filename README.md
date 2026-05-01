@@ -1,6 +1,6 @@
-# HNG14 Stage 2 DevOps - Job Processing Application
+# Job Processing Application
 
-A containerized, production-ready job processing application with FastAPI backend, Redis queue, worker service, and Express.js frontend.
+A containerized,job processing application with FastAPI backend, Redis queue, worker service, and Express.js frontend.
 
 ## Architecture
 

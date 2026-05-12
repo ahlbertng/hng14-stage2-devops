@@ -46,14 +46,14 @@ Redis is not exposed to the host.
 
 ## Quick Start
 
-### 1. Clone and Setup
+### Clone and Setup
 
 ```bash
 git clone <repository-url>
 cd hng14-stage2-devops
 ```
 
-### 2. Configure Environment
+### Configure Environment
 
 ```bash
 # Copy the example environment file
@@ -64,7 +64,7 @@ cp .env.example .env
 nano .env
 ```
 
-### 3. Build and Start Services
+### Build and Start Services
 
 ```bash
 # Build all container images and start services
@@ -74,7 +74,7 @@ docker-compose up -d
 docker-compose logs -f
 ```
 
-### 4. Verify Services Are Running
+### Verify Services Are Running
 
 ```bash
 # Check service status
@@ -86,7 +86,7 @@ docker-compose exec redis redis-cli ping
 docker-compose exec frontend wget -q http://localhost:3000/health -O -
 ```
 
-### 5. Access the Application
+### Access the Application
 
 Open your browser to: **http://localhost:3000**
 
@@ -329,10 +329,10 @@ docker-compose pull
 docker-compose up -d
 
 # The compose file handles rolling updates:
-# 1. New container starts
-# 2. Health checks verify it's ready
-# 3. Traffic switches to new container
-# 4. Old container stops
+#  New container starts
+#  Health checks verify it's ready
+#  Traffic switches to new container
+#  Old container stops
 ```
 
 ## Security Considerations
@@ -351,12 +351,12 @@ docker-compose up -d
 
 The GitHub Actions workflow (`/.github/workflows/ci-cd.yml`) includes:
 
-1. **Lint** - Python (flake8), JavaScript (eslint), Dockerfiles (hadolint)
-2. **Test** - Unit tests with coverage reporting
-3. **Build** - Build all images with SHA and latest tags
-4. **Security Scan** - Trivy vulnerability scanning
-5. **Integration Test** - Full stack smoke test
-6. **Deploy** - Rolling update to production
+**Lint** - Python (flake8), JavaScript (eslint), Dockerfiles (hadolint)
+**Test** - Unit tests with coverage reporting
+**Build** - Build all images with SHA and latest tags
+**Security Scan** - Trivy vulnerability scanning
+**Integration Test** - Full stack smoke test
+**Deploy** - Rolling update to production
 
 Runs on push to `main` and pull requests.
 
@@ -406,12 +406,3 @@ cd worker && python worker.py
 # Start Frontend (separate terminal)
 cd frontend && npm start
 ```
-
-## License
-
-MIT
-
-## Support
-
-For issues or questions, please check the logs and review the [Troubleshooting](#troubleshooting) section.
-

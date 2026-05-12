@@ -49,7 +49,7 @@ Redis is not exposed to the host.
 ### Clone and Setup
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/ahlbertng/hng14-stage2-devops
 cd hng14-stage2-devops
 ```
 
